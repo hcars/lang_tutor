@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<script>
+  function insertSpecialCharacter(character) {
+    var inputElement = document.getElementById("user-dialogue");
+    var cursorPosition = inputElement.selectionStart;
+    var text = inputElement.value;
+    var newText = text.slice(0, cursorPosition) + character + text.slice(cursorPosition);
+    inputElement.value = newText;
+    inputElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+  }
+</script>
+
+
+<head>
+  <title>Language Tutor</title>
+  <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='dog.png') }}"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+
+<body>
+  <h1 class="logo">L<span>engua</span></h1>
+  <h3>Begin your Language Learning Journey</h3>
+  {% if language %}
+    <p>Your current selected language is {{language}}</p>
+    
+    <form action="/" method="post">
+      <input type="hidden" name="language" id="language" value="{{language}}"/>
+      <input type="text" name="dialogue" id="user-dialogue" placeholder="Start your dialogue!" required />
+      <div class="button-row">
+        <button onclick="insertSpecialCharacter('é')">é</button>
+        <button onclick="insertSpecialCharacter('á')">á</button>
+        <button onclick="insertSpecialCharacter('í')">í</button>
+        <button onclick="insertSpecialCharacter('ú')">ú</button>
+        <button onclick="insertSpecialCharacter('ú')">ú</button>
+        <button onclick="insertSpecialCharacter('ñ')">ñ</button>
+      </div>
+      <div class="button-row">
+        <button onclick="insertSpecialCharacter('¡')">¡</button>
+        <button onclick="insertSpecialCharacter('¿')">¿</button>
+        <button onclick="insertSpecialCharacter('ü')">ü</button>
+        <button onclick="insertSpecialCharacter('Ü')">ü</button>
+        <button onclick="insertSpecialCharacter('ä')">ä</button>
+        <button onclick="insertSpecialCharacter('Ä')">Ä</button>
+        <button onclick="insertSpecialCharacter('ö')">ö</button>
+        <button onclick="insertSpecialCharacter('Ö')">Ö</button>
+      </div>
+      
+        
+      <input type="submit" value="Submit Dialogue" />
+    </form>
+    
+
+    
+
+    {% else %}
+      
+      <form action="/" method="get">
+        <select name="language" id="language">
+          <option value="English">English</option>
+          <option value="German">German</option>
+          <option value="Spanish">Spanish</option>
+          <option value="French">French</option>
+        </select>
+        <input type="submit" value="select Language" />
+      </form>
+  {% endif %}
+  
+  {% if result %}
+  <div class="result-container">
+    <div class="result">
+      Current Response:
+      {{ result }}
+    </div>
+  </div>
+  {% endif %}
+
+</body>
