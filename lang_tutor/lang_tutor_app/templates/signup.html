@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block content %}
+    <h1>Sign Up</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email" style="text-align: left;">Email:</label>
+        <input type="text" id="email" name="email" style="width: 100%; max-width: 300px;"><br><br>
+        <label for="username" style="text-align: left;">Username:</label>
+        <input type="text" id="username" name="username" style="width: 100%; max-width: 300px;"><br><br>
+        <label for="password" style="text-align: left;">Password:</label>
+        <input type="password" id="password" name="password" style="width: 100%; max-width: 300px;"><br><br>
+        <button type="submit"></button>
+    </form>
+{% endblock %}
