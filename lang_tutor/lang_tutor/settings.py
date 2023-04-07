@@ -55,7 +55,7 @@ ROOT_URLCONF = 'lang_tutor.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["lang_tutor_app/templates/"],
+        'DIRS': ["lang_tutor_app/"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
