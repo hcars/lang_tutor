@@ -37,6 +37,6 @@ def login_view(request):
             return HttpResponseBadRequest("Something went wrong.")
         if user is not None:
             login(request, user)
-            return HttpResponse("<p> Success! </p>")
+            return render(request, "index.html")
         else:
             return HttpResponseBadRequest("Login Failed")

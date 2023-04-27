@@ -58,7 +58,7 @@ class Users(TestCase):
         request.POST['username'] = 'cool_guyu'
         request.POST['password'] = 'testingMe'
         response = views.login_view(request)
-        self.assertEqual(response.content, bytes("<p> Success! </p>", 'utf-8'))
+        self.assertEqual(response.status_code, 200)
     
     def test_failed_sign_in(self):
         request = HttpRequest()
