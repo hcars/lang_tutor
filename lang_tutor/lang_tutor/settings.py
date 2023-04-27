@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+@j^3qa+&sl+&8f11z11!yca39&j&&zk4_2-wr1o4-br359z3e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'lang_tutor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'lang_tutor_app',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'L1ngua',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

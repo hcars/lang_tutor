@@ -1,13 +1,17 @@
 from django.test import TestCase
 import json
+from django.contrib.sessions.backends.db import SessionStore
 from django.http import HttpRequest, HttpResponseBadRequest
 from . import models
 from . import views
+from django.conf import settings
+from importlib import import_module
 # Create your tests here.
 
 
 class Users(TestCase):
     def setUp(self):
+        
         models.User.objects.create_user(username="cool_guyu", email="cool@mail.com", password="testingMe")
 
     def test_single_sign_up(self):
@@ -43,3 +47,27 @@ class Users(TestCase):
         request.POST['password'] = '1234testing1234'
         response = views.signup(request)
         self.assertEqual(response.status_code, 400)
+    
+
+    def test_success_sign_in(self):
+        request = HttpRequest()
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+        request.session = engine.SessionStore(session_key)
+        request.method = 'POST'
+        request.POST['username'] = 'cool_guyu'
+        request.POST['password'] = 'testingMe'
+        response = views.login_view(request)
+        self.assertEqual(response.content, bytes("<p> Success! </p>", 'utf-8'))
+    
+    def test_failed_sign_in(self):
+        request = HttpRequest()
+        engine = import_module(settings.SESSION_ENGINE)
+        session_key = None
+        request.session = engine.SessionStore(session_key)
+        request.method = 'POST'
+        request.POST['username'] = 'cool_guyu'
+        request.POST['password'] = 'testiMe'
+        response = views.login_view(request)
+        self.assertEqual(response.content, bytes("Login Failed", 'utf-8'))
+        
