@@ -1,0 +1,27 @@
+{% extends 'templates/base.html' %}
+
+
+{% block title %}
+Chat
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h1>Language Chatting Web App</h1>
+    <div class="chat-box">
+      <!-- AI and user messages will be displayed here -->
+    </div>
+    <div class="input-box">
+      <form method="post">
+        {% csrf_token %}
+        <input type="text" id="message" name="message" placeholder="Type your message here">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <div class="response-box">
+      <!-- AI's response will be displayed here -->
+      {{ chat_response }}
+    </div>
+  </div>
+{% endblock %}

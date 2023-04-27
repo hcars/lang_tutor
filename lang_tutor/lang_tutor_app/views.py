@@ -3,6 +3,11 @@ from django.http import HttpResponseBadRequest, HttpResponse
 from . import models
 from django.db.utils import IntegrityError
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.conf import settings # import the settings file
+import openai
+
+
 
 # Create your views here.
 def index(request):
@@ -40,3 +45,23 @@ def login_view(request):
             return render(request, "index.html")
         else:
             return HttpResponseBadRequest("Login Failed")
+
+@login_required
+def chat(request):
+    if request.method == "POST":
+        openai.organization = "org-UAmuQ4eJWH9XRCr1F5Kh0a3f"
+        openai.api_key = settings.OPENAI_API_KEY
+        print(openai.api_key)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-0301",
+            temperature=.2,
+            messages=[
+                {"role": "system", "content": "You are language tutor. Your job is to chat with the user in their target language. After each chat they send you, keep the conversation going and provide feedback on any grammatical mistakes or bad diction. Language: German"},
+                {"role": "user", "content": request.POST.get("message")}
+            ]
+        )
+        return render(request, "chat.html", {"chat_response": response["choices"][0]["message"]["content"]})
+    elif request.method == "GET": 
+        return render(request, "chat.html", {})
+    else:
+        return HttpResponseBadRequest()
