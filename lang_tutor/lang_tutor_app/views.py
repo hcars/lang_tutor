@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings # import the settings file
 import openai
 
-
+LLM_SYSTEM_PROMPT = "You are a language tutor. Your job is to chat with the user in their target language. After each chat they send you, keep the conversation going and provide feedback on any grammatical mistakes or bad diction."
 
 # Create your views here.
 def index(request):
@@ -51,12 +51,13 @@ def chat(request):
     if request.method == "POST":
         openai.organization = "org-UAmuQ4eJWH9XRCr1F5Kh0a3f"
         openai.api_key = settings.OPENAI_API_KEY
-        print(openai.api_key)
+        print(request.POST)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-0301",
             temperature=.2,
             messages=[
-                {"role": "system", "content": "You are language tutor. Your job is to chat with the user in their target language. After each chat they send you, keep the conversation going and provide feedback on any grammatical mistakes or bad diction. Language: German"},
+                {"role": "system", "content":  LLM_SYSTEM_PROMPT},
+                {"role": "system", "content": f"Language: " + request.POST.get("lang")},
                 {"role": "user", "content": request.POST.get("message")}
             ]
         )

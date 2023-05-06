@@ -7,21 +7,79 @@ Chat
 
 
 {% block content %}
-<div class="container">
-    <h1>Language Chatting Web App</h1>
-    <div class="chat-box">
-      <!-- AI and user messages will be displayed here -->
-    </div>
-    <div class="input-box">
+<script>
+  function insertSpecialCharacter(character) {
+    var inputElement = document.getElementById("message");
+    console.log(inputElement)
+    inputElement.value += character;
+    console.log(text)
+  }
+
+  updateSpecialCharacters = function() {
+    let curr_lang = document.getElementById('lang').value;
+    var new_element = document.createElement("div");
+    var button_div = document.getElementById('button_div');
+    let special_chars;
+    switch (curr_lang){
+      case 'german':
+        special_chars = ['Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü', 'ß'];
+        break;
+      case 'spanish':
+        special_chars = ["á", "é", "í", "ó", "ú", "ü", "ñ", "¿", "¡"];
+        break;
+      case 'french':
+        special_chars = ["è", "à", "ù", "â", "ê", "î", "ô", "û", "ë", "ï", "ü"]
+        break;
+      default:
+        special_chars = null;
+    }
+    if (special_chars === null){
+      button_div.innerHTML = '';
+    }
+    else{
+      for (let curr_char of special_chars) {
+        let char_button, char_button_text;
+        char_button = document.createElement('BUTTON');
+        char_button.onclick = function () {insertSpecialCharacter(curr_char)};
+        char_button.className = "special_char"
+        char_button_text = document.createTextNode(curr_char);
+        char_button.appendChild(char_button_text);
+        new_element.appendChild(char_button);
+      }
+      button_div.replaceChildren(new_element);
+    }
+    
+
+  }
+
+</script>
+
+<div class="container" style="color: black;">
+    <h1 style="padding: 10px;">Language Chat</h1>
+    <div class="input-box" style="width: 90%; padding: 10px;">
+
       <form method="post">
         {% csrf_token %}
+        <label for="lang">Choose a language:</label>
+        <select name="lang" id="lang" onclick="updateSpecialCharacters()" default="English">
+          <option value="english">English</option>
+          <option value="german">German</option>
+          <option value="french">French</option>
+          <option value="spanish">Spanish</option>
+        </select> 
         <input type="text" id="message" name="message" placeholder="Type your message here">
         <button type="submit">Send</button>
       </form>
+      <div id="button_div">
+      </div>
     </div>
     <div class="response-box">
-      <!-- AI's response will be displayed here -->
-      {{ chat_response }}
+      {% if chat_response %}
+        {{ chat_response }}
+      {% else %}
+        Response Will Display here.
+      {% endif %}
     </div>
   </div>
+
 {% endblock %}
