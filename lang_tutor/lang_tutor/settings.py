@@ -11,7 +11,19 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+import environ
+import os
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+# Set the project base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-+@j^3qa+&sl+&8f11z11!yca39&j&&zk4_2-wr1o4-br359z3e'
-OPENAI_API_KEY = ''
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
