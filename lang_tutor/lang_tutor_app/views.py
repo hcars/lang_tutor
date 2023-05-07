@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings # import the settings file
 import openai
 
-LLM_SYSTEM_PROMPT = "You are a language tutor. Your job is to chat with the user in their target language. After each chat they send you, keep the conversation going and provide feedback on any grammatical mistakes or bad diction."
+LLM_SYSTEM_PROMPT = "You are a language tutor. Your job is to chat with the user in their target language. Do not stop using their target language! After each chat they send you, first, provide feedback on any grammatical mistakes or bad diction and second, respond to their chat in an engaging manner."
 
 # Create your views here.
 def index(request):
@@ -51,16 +51,26 @@ def chat(request):
     if request.method == "POST":
         openai.organization = "org-UAmuQ4eJWH9XRCr1F5Kh0a3f"
         openai.api_key = settings.OPENAI_API_KEY
-        print(request.POST)
+        msg = request.POST.get("message")
+        
+        if 'history' not in request.session:
+            request.session['history'] = []
+        elif len(request.session['history']) >= 8:
+            request.session['history'] = request.session['history'][:8]
+
+        messages = [
+            {"role": "system", "content":  LLM_SYSTEM_PROMPT},
+            {"role": "system", "content": f"Language: " + request.POST.get("lang")},
+        ]
+        for prev_msg in request.session['history']:
+            messages.append({"role": "user", "content": prev_msg})
+        messages.append({"role": "user", "content": msg})
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-0301",
             temperature=.2,
-            messages=[
-                {"role": "system", "content":  LLM_SYSTEM_PROMPT},
-                {"role": "system", "content": f"Language: " + request.POST.get("lang")},
-                {"role": "user", "content": request.POST.get("message")}
-            ]
+            messages=messages
         )
+        request.session['history'].append(msg)
         return render(request, "chat.html", {"chat_response": response["choices"][0]["message"]["content"]})
     elif request.method == "GET": 
         return render(request, "chat.html", {})

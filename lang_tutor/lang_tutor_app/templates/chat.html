@@ -61,7 +61,10 @@ Chat
       <form method="post">
         {% csrf_token %}
         <label for="lang">Choose a language:</label>
-        <select name="lang" id="lang" onclick="updateSpecialCharacters()" default="English">
+        <select name="lang" id="lang" onclick="updateSpecialCharacters()"
+        style="background-color: #000000; color: #fff; 
+        padding: 5px 15px; border: none; 
+        border-radius: 4px; cursor: pointer;" default="English">
           <option value="english">English</option>
           <option value="german">German</option>
           <option value="french">French</option>
