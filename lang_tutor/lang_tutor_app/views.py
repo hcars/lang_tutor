@@ -46,32 +46,36 @@ def login_view(request):
         else:
             return HttpResponseBadRequest("Login Failed")
 
+
 @login_required
 def chat(request):
     if request.method == "POST":
-        openai.organization = "org-UAmuQ4eJWH9XRCr1F5Kh0a3f"
-        openai.api_key = settings.OPENAI_API_KEY
-        msg = request.POST.get("message")
-        
-        if 'history' not in request.session:
-            request.session['history'] = []
-        elif len(request.session['history']) >= 8:
-            request.session['history'] = request.session['history'][:8]
+        if request.user.is_paying:
+            openai.organization = settings.OPENAI_API_ORGANIZATION
+            openai.api_key = settings.OPENAI_API_KEY
+            msg = request.POST.get("message")
+            
+            if 'history' not in request.session:
+                request.session['history'] = []
+            elif len(request.session['history']) >= 8:
+                request.session['history'] = request.session['history'][:8]
 
-        messages = [
-            {"role": "system", "content":  LLM_SYSTEM_PROMPT},
-            {"role": "system", "content": f"Language: " + request.POST.get("lang")},
-        ]
-        for prev_msg in request.session['history']:
-            messages.append({"role": "user", "content": prev_msg})
-        messages.append({"role": "user", "content": msg})
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0301",
-            temperature=.2,
-            messages=messages
-        )
-        request.session['history'].append(msg)
-        return render(request, "chat.html", {"chat_response": response["choices"][0]["message"]["content"]})
+            messages = [
+                {"role": "system", "content":  LLM_SYSTEM_PROMPT},
+                {"role": "system", "content": f"Language: " + request.POST.get("lang")},
+            ]
+            for prev_msg in request.session['history']:
+                messages.append({"role": "user", "content": prev_msg})
+            messages.append({"role": "user", "content": msg})
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo-0301",
+                temperature=.2,
+                messages=messages
+            )
+            request.session['history'].append(msg)
+            return render(request, "chat.html", {"chat_response": response["choices"][0]["message"]["content"]})
+        else:
+            return HttpResponseBadRequest("User is not paying.")
     elif request.method == "GET": 
         return render(request, "chat.html", {})
     else:

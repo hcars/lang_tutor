@@ -6,7 +6,68 @@ Chat
 {% endblock %}
 
 
+
 {% block content %}
+
+<style>
+  #message {
+    width: 80% ; 
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #5f5e5e;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  .chat-box {
+  scroll-behavior: smooth;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  background-color: #5f5e5e;
+  border: 1px solid #202020;
+}
+.input-box {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  background-color: #5f5e5e;
+  width: 90%; 
+  padding: 10px;
+}
+
+
+.input-box button {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+select {
+  background-color: #000000; 
+  color: #fff; 
+  padding: 5px 15px; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer;
+}
+
+.response-box {
+  padding: 10px;
+  background-color: #5f5e5e;
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+
+.special_char {
+  border: 1px #fff;
+}
+</style>
+
 <script>
   function insertSpecialCharacter(character) {
     var inputElement = document.getElementById("message");
@@ -56,25 +117,26 @@ Chat
 
 <div class="container" style="color: black;">
     <h1 style="padding: 10px;">Language Chat</h1>
-    <div class="input-box" style="width: 90%; padding: 10px;">
+    <div class="input-box">
 
       <form method="post">
         {% csrf_token %}
         <label for="lang">Choose a language:</label>
         <select name="lang" id="lang" onclick="updateSpecialCharacters()"
-        style="background-color: #000000; color: #fff; 
-        padding: 5px 15px; border: none; 
-        border-radius: 4px; cursor: pointer;" default="English">
+        default="English">
           <option value="english">English</option>
           <option value="german">German</option>
           <option value="french">French</option>
           <option value="spanish">Spanish</option>
         </select> 
-        <input type="text" id="message" name="message" placeholder="Type your message here">
+        <textarea type="text" id="message" name="message" size="800"
+        placeholder="Type your message here">
+          </textarea>
+        <div id="button_div">
+        </div>
         <button type="submit">Send</button>
       </form>
-      <div id="button_div">
-      </div>
+      
     </div>
     <div class="response-box">
       {% if chat_response %}
