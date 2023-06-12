@@ -40,7 +40,7 @@ OPENAI_API_ORGANIZATION = os.getenv("OPENAI_API_ORGANIZATION")
 
 LOGOUT_REDIRECT_URL = "/lang_tutor_app"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '.vercel.app']
 
