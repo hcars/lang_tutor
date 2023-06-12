@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+@j^3qa+&sl+&8f11z11!yca39&j&&zk4_2-wr1o4-br359z3e'
+SECRET_KEY = os.getenv("SECRET_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_API_ORGANIZATION = os.getenv("OPENAI_API_ORGANIZATION")
 
