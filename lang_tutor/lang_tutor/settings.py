@@ -42,7 +42,7 @@ LOGOUT_REDIRECT_URL = "/lang_tutor_app"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', 'https://lang-tutor-pied.vercel.app/']
 
 
 # Application definition
