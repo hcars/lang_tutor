@@ -14,6 +14,9 @@ from pathlib import Path
 import environ
 import os
 
+# vercel_app/settings.py
+WSGI_APPLICATION = 'vercel_app.wsgi.app'
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
