@@ -144,7 +144,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'lang_tutor_app/static')]
 # Configures the staticfiles directory to serve
 # static files from /static/ on our deployment
-STATIC_ROOT = "staticfiles/"
+STATIC_ROOT = "lang_tutor/staticfiles/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
