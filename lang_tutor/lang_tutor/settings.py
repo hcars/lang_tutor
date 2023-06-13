@@ -140,12 +140,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# STATIC_URL = 'static/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'lang_tutor_app/static')]
 # Configures the staticfiles directory to serve
 # static files from /static/ on our deployment
-STATIC_ROOT = os.path.join(
-    BASE_DIR, 'staticfiles', 'static')
+STATIC_ROOT = "staticfiles/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
