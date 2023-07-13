@@ -94,14 +94,25 @@ WSGI_APPLICATION = 'lang_tutor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'lang_tutor_app',
+#         'USER': 'myprojectuser',
+#         'PASSWORD': 'L1ngua',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lang_tutor_app',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'L1ngua',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': os.getenv('RDS_DB_NAME'),
+        'USER': os.getenv('RDS_DB_USERNAME'),
+        'PASSWORD': os.getenv('RDS_DB_PASSWORD'),
+        'HOST': os.getenv('RDS_HOST'),
+        'PORT': os.getenv('RDS_PORT'),
     }
 }
 
