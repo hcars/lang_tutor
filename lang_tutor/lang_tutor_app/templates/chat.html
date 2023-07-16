@@ -99,7 +99,7 @@ select {
       for (let curr_char of special_chars) {
         let char_button, char_button_text;
         char_button = document.createElement('BUTTON');
-        char_button.nodeType = 'button';
+        char_button.setAttribute('type', 'button');
         char_button.onclick = function () {insertSpecialCharacter(curr_char)};
         char_button.className = "special_char"
         char_button_text = document.createTextNode(curr_char);
