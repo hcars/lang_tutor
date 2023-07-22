@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from . import models
 from django.db.utils import IntegrityError
 from django.contrib.auth import authenticate, login
@@ -58,7 +58,7 @@ def chat(request):
             if 'history' not in request.session:
                 request.session['history'] = []
             elif len(request.session['history']) >= 8:
-                request.session['history'] = request.session['history'][:8]
+                request.session['history'] = request.session['history'][8:]
 
             messages = [
                 {"role": "system", "content":  LLM_SYSTEM_PROMPT},
@@ -73,7 +73,8 @@ def chat(request):
                 messages=messages
             )
             request.session['history'].append(msg)
-            return render(request, "chat.html", {"chat_response": response["choices"][0]["message"]["content"]})
+            response_msg = response["choices"][0]["message"]["content"]
+            return JsonResponse({"chat_response": response_msg})
         else:
             return HttpResponseBadRequest("User is not paying.")
     elif request.method == "GET": 

@@ -112,13 +112,40 @@ select {
 
   }
 
+
+
+  async function requestChat() {
+    const form = document.getElementById("chat_form");
+    const submitter = document.querySelector("button[value=Send]");
+    const formData = new FormData(form, submitter);
+    console.log(formData);
+    const response = await fetch('/chat', {
+        method: 'POST',
+        body: formData,
+    })
+    if (response.ok){
+      const result = await response.json();
+      document.getElementById("response-div").innerText = result.chat_response;
+      document.getElementById("message").value = "";
+      return Promise.resolve(result);
+    }
+    else{
+      console.log(response);
+      return Promise.reject("Bad response.");
+    }
+
+  }
+
+ 
+  
+
 </script>
 
 <div class="container" style="color: black;">
     <h1 style="padding: 10px;">Language Chat</h1>
     <div class="input-box">
 
-      <form method="post">
+      <form  id="chat_form">
         {% csrf_token %}
         <label for="lang">Choose a language:</label>
         <select name="lang" id="lang" onclick="updateSpecialCharacters()"
@@ -133,11 +160,11 @@ select {
           </textarea>
         <div id="button_div">
         </div>
-        <button type="submit">Send</button>
+        <button type="submit" >Send</button>
       </form>
       
     </div>
-    <div class="response-box">
+    <div id="response-div" class="response-box" >
       {% if chat_response %}
         {{ chat_response }}
       {% else %}
@@ -145,5 +172,15 @@ select {
       {% endif %}
     </div>
   </div>
+
+  <script>
+  var form = document.getElementById("chat_form");
+
+  // // attach event listener
+  form.addEventListener("submit", function(event){
+    event.preventDefault(); // prevent the default form submission behavior
+    requestChat(); // call the requestChat function
+  });
+  </script>
 
 {% endblock %}
