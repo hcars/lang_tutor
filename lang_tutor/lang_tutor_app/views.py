@@ -8,10 +8,14 @@ from django.conf import settings # import the settings file
 import openai
 
 LLM_SYSTEM_PROMPT = "You are a language tutor. Your job is to chat with the user in their target language. Do not stop using their target language! After each chat they send you, first, provide feedback on any grammatical mistakes or bad diction and second, respond to their chat in an engaging manner."
+LLM_HISTORY_PROMPT = "The following are summary of the chat history. Use them to inform the context of your chats, but ONLY suggest grammatical changes to the most recent user message."
 
 # Create your views here.
 def index(request):
     return render(request, "index.html")
+
+def about(request):
+    return render(request, "about.html")
 
 def signup(request):
     if request.method == "POST":
@@ -58,14 +62,15 @@ def chat(request):
             if 'history' not in request.session:
                 request.session['history'] = []
             elif len(request.session['history']) >= 8:
-                request.session['history'] = request.session['history'][8:]
+                request.session['history'] = request.session['history'][6:]
 
             messages = [
                 {"role": "system", "content":  LLM_SYSTEM_PROMPT},
                 {"role": "system", "content": f"Language: " + request.POST.get("lang")},
             ]
+            messages.append({"role": "system", "content": LLM_HISTORY_PROMPT})
             for prev_msg in request.session['history']:
-                messages.append({"role": "user", "content": prev_msg})
+                messages.append({"role": "system", "content": prev_msg})
             messages.append({"role": "user", "content": msg})
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo-0301",
