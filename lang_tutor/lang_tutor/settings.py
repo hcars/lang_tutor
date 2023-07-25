@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 import environ
-import os
+import sys
+
 
 # vercel_app/settings.py
 WSGI_APPLICATION = 'vercel_app.wsgi.app'
@@ -21,6 +22,8 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
+
+DEBUG = os.getenv('DEBUG') == 'True'
 
 # Set the project base directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,27 +97,36 @@ WSGI_APPLICATION = 'lang_tutor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'lang_tutor_app',
-#         'USER': 'myprojectuser',
-#         'PASSWORD': 'L1ngua',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('RDS_DB_NAME'),
-        'USER': os.getenv('RDS_DB_USERNAME'),
-        'PASSWORD': os.getenv('RDS_DB_PASSWORD'),
-        'HOST': os.getenv('RDS_HOST'),
-        'PORT': os.getenv('RDS_PORT'),
+
+
+
+
+if DEBUG:
+    # Uncomment for local testing.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'henry',
+            'PASSWORD': 'L1ngua',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('RDS_DB_NAME'),
+            'USER': os.getenv('RDS_DB_USERNAME'),
+            'PASSWORD': os.getenv('RDS_DB_PASSWORD'),
+            'HOST': os.getenv('RDS_HOST'),
+            'PORT': os.getenv('RDS_PORT'),
+        }
+    }
+
 
 
 # Password validation
@@ -151,10 +163,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'lang_tutor_app/static')]
+if DEBUG:
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'lang_tutor_app/static')]
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'lang_tutor_app/static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
