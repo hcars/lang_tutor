@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 import environ
-import os
+import sys
+
 
 # vercel_app/settings.py
 WSGI_APPLICATION = 'vercel_app.wsgi.app'
@@ -96,13 +97,18 @@ WSGI_APPLICATION = 'lang_tutor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
+
+
+
+
 if DEBUG:
     # Uncomment for local testing.
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'lang_tutor_app',
-            'USER': 'myprojectuser',
+            'NAME': 'postgres',
+            'USER': 'henry',
             'PASSWORD': 'L1ngua',
             'HOST': 'localhost',
             'PORT': '',
@@ -120,6 +126,7 @@ else:
             'PORT': os.getenv('RDS_PORT'),
         }
     }
+
 
 
 # Password validation
