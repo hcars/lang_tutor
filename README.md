@@ -6,7 +6,8 @@ This is a fun little app that I made to play around with the OpenAI API. It help
 
 Ensure you provide a .env file that populates the variables required by the site.
 
-Run the commands listed in build.sh 
+Run the commands listed in build.sh
+
   pip install -r requirements.txt
   python3.9 manage.py collectstatic --noinput
   python3.9 manage.py makemigrations
