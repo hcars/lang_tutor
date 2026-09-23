@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: climbing_app_db
+    environment:
+      POSTGRES_USER: climbing_user
+      POSTGRES_PASSWORD: climbing_password
+      POSTGRES_DB: climbing_app
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
