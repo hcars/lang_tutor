@@ -1,5 +1,5 @@
 [package]
-name = "climbing-app-backend"
+name = "Lang-app-backend"
 version = "0.1.0"
 edition = "2021"
 

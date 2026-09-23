@@ -5,10 +5,10 @@ use crate::models::*;
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
-struct ClimbingDslParser;
+struct LangDslParser;
 
 pub fn parse_workout(input: &str) -> Result<WorkoutParseResult, String> {
-    let pairs = ClimbingDslParser::parse(Rule::program, input)
+    let pairs = LangDslParser::parse(Rule::program, input)
         .map_err(|e| format!("Parse error: {e}"))?;
 
     let mut variables = Vec::new();

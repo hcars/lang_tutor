@@ -1,4 +1,4 @@
-# Climbing app backend
+# Lang app backend
 
 The backend is an OAuth 2.0 resource server. It accepts opaque bearer access tokens and validates them with the authorization server's RFC 7662 introspection endpoint. It does not store passwords or access tokens.
 
@@ -7,7 +7,7 @@ The backend is an OAuth 2.0 resource server. It accepts opaque bearer access tok
 Set these environment variables before starting Rocket:
 
 ```text
-DATABASE_URL=postgres://user:password@localhost/climbing_app
+DATABASE_URL=postgres://user:password@localhost/Lang_app
 OAUTH_INTROSPECTION_URL=https://issuer.example.com/oauth2/introspect
 OAUTH_CLIENT_ID=resource-server-client
 OAUTH_CLIENT_SECRET=replace-me

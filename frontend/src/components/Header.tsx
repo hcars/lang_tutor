@@ -9,7 +9,7 @@ export function Header() {
   return (
     <header className="border-b border-border px-6 py-4 flex items-center justify-between">
       <Link to="/" className="text-xl font-bold text-primary">
-        Climbing Trainer
+        Lang Trainer
       </Link>
 
       <nav className="flex items-center gap-4">
