@@ -56,10 +56,10 @@ struct UserInfo {
 #[get("/auth/logout")]
 pub fn logout(cookies: &CookieJar<'_>) -> Redirect {
     cookies.remove_private(Cookie::from(USER_ID_COOKIE));
-    
-    let frontend_url = std::env::var("FRONTEND_URL")
-        .unwrap_or_else(|_| "http://localhost:5173".to_string());
-    
+
+    let frontend_url =
+        std::env::var("FRONTEND_URL").unwrap_or_else(|_| "http://localhost:5173".to_string());
+
     Redirect::to(frontend_url)
 }
 #[get("/auth/login")]
@@ -92,7 +92,6 @@ pub async fn login(
 
     Ok(Redirect::to(auth_url.to_string()))
 }
-
 
 #[get("/auth/callback?<code>&<state>")]
 pub async fn callback(
@@ -129,9 +128,7 @@ pub async fn callback(
         .await
         .map_err(|_| Status::InternalServerError)?;
 
-    let access_token = token_result
-        .access_token()
-        .secret();
+    let access_token = token_result.access_token().secret();
 
     let user_info: UserInfo = reqwest::Client::new()
         .get(&oauth_client.user_info_url)
@@ -149,8 +146,8 @@ pub async fn callback(
     user_cookie.set_http_only(true);
     cookies.add_private(user_cookie);
 
-    let frontend_url = std::env::var("FRONTEND_URL")
-        .unwrap_or_else(|_| "http://localhost:5173".to_string());
+    let frontend_url =
+        std::env::var("FRONTEND_URL").unwrap_or_else(|_| "http://localhost:5173".to_string());
 
     Ok(Redirect::to(format!("{}/dashboard", frontend_url)))
 }
@@ -273,7 +270,9 @@ mod tests {
     #[rocket::async_test]
     async fn logout_removes_user_cookie_and_redirects_home() {
         let client = Client::untracked(test_rocket()).await.unwrap();
-        client.cookies().add_private(Cookie::new(USER_ID_COOKIE, "user-123"));
+        client
+            .cookies()
+            .add_private(Cookie::new(USER_ID_COOKIE, "user-123"));
 
         let response = client.get("/auth/logout").dispatch().await;
 
