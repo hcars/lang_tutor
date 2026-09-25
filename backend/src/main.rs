@@ -12,8 +12,6 @@ use rocket::serde::json::Json;
 use rocket_cors::{AllowedOrigins, CorsOptions};
 use sqlx::PgPool;
 
-
-
 #[get("/api/health")]
 fn health() -> &'static str {
     "ok"
@@ -76,10 +74,7 @@ async fn rocket() -> _ {
         .manage(pool)
         .manage(cors.clone())
         .attach(cors)
-        .mount(
-            "/",
-            routes![health, auth_session, auth_me, home],
-        );
+        .mount("/", routes![health, auth_session, auth_me, home]);
 
     if let Ok(oauth_client) = oauth::OAuthClient::from_env() {
         rocket = rocket
