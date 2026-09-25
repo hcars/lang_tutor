@@ -59,7 +59,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Run Frontend Tests (Bun Test)
-        run: bun test
+        run: bun run test:run
 
       - name: Run Typecheck & Build Check
         run: bun run build
