@@ -1,11 +1,11 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: climbing_app_db
+    container_name: Lang_app_db
     environment:
-      POSTGRES_USER: climbing_user
-      POSTGRES_PASSWORD: climbing_password
-      POSTGRES_DB: climbing_app
+      POSTGRES_USER: Lang_user
+      POSTGRES_PASSWORD: Lang_password
+      POSTGRES_DB: Lang_app
     ports:
       - "5433:5432"
     volumes:

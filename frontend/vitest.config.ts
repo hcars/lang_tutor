@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "typo-js": path.resolve(__dirname, "./src/__mocks__/typo-js.ts"),
     },
   },
   test: {

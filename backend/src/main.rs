@@ -5,37 +5,12 @@ mod auth;
 mod db;
 mod models;
 mod oauth;
-mod parser;
 
-use models::{ParseRequest, ParseResponse, SessionResponse, SessionUser};
+use models::{SessionResponse, SessionUser};
 use rocket::http::{Method, Status};
 use rocket::serde::json::Json;
 use rocket_cors::{AllowedOrigins, CorsOptions};
 use sqlx::PgPool;
-
-#[post("/api/parse", format = "json", data = "<body>")]
-async fn parse_workout(
-    _token: auth::OAuthToken,
-    pool: &rocket::State<PgPool>,
-    body: Json<ParseRequest>,
-) -> Result<Json<ParseResponse>, Status> {
-    db::upsert_user(pool, &_token.0)
-        .await
-        .map_err(|_| Status::InternalServerError)?;
-
-    match parser::parse_workout(&body.input) {
-        Ok(data) => Ok(Json(ParseResponse {
-            success: true,
-            data: Some(data),
-            error: None,
-        })),
-        Err(e) => Ok(Json(ParseResponse {
-            success: false,
-            data: None,
-            error: Some(e),
-        })),
-    }
-}
 
 #[get("/api/health")]
 fn health() -> &'static str {
@@ -99,7 +74,7 @@ async fn rocket() -> _ {
         .manage(pool)
         .manage(cors.clone())
         .attach(cors)
-        .mount("/", routes![parse_workout, health, auth_session, auth_me, home]);
+        .mount("/", routes![health, auth_session, auth_me, home]);
 
     if let Ok(oauth_client) = oauth::OAuthClient::from_env() {
         rocket = rocket
